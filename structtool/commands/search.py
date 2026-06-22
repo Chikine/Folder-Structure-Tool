@@ -7,7 +7,7 @@ Handles:
 """
 import json
 
-from constants import STRUCTURES_DIR
+from ..constants import STRUCTURES_DIR
 
 def search_by_tag(
     tag

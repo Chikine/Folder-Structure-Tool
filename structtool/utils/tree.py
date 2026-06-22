@@ -1,5 +1,5 @@
 import json
-from versioning import get_latest_version_file
+from .versioning import get_latest_version_file
 
 def show_tree(
     struct_name

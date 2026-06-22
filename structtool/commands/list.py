@@ -6,7 +6,7 @@ Handles:
     structtool list
 """
 
-from constants import STRUCTURES_DIR
+from ..constants import STRUCTURES_DIR
 
 def list_structures():
     """

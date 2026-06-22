@@ -9,31 +9,17 @@ Responsible only for:
 import argparse
 import sys
 
-from commands.save import (
-    save_structure
-)
-
-from commands.load import (
-    load_structure
-)
-
-from commands.list import (
-    list_structures
-)
-
-from commands.remove import (
-    remove_structure
-)
-
-from commands.history import (
-    show_history
-)
-
-from commands.search import (
+from .commands import (
+    save_structure,
+    load_structure,
+    remove_structure,
+    list_structures,
+    show_history,
     search_by_tag
 )
 
-from utils.tree import (
+from .utils import (
+    init_project,
     show_tree
 )
 
@@ -46,15 +32,35 @@ def main():
     """
     parser = argparse.ArgumentParser(
         prog="structtool",
-        description=(
-            "Save and recreate folder structures"
-        )
+        description="""
+        StructTool - Save and recreate folder structures.
+
+        Examples:
+
+            structtool init
+
+            structtool save website .
+
+            structtool load website ./NewProject
+
+            structtool list
+
+            structtool search react
+
+        for more information: https://github.com/Chikine/Folder-Structure-Tool
+        """
     )
 
     subparsers = (
         parser.add_subparsers(
             dest="command"
         )
+    )
+
+    # Init
+    init_parser = subparsers.add_parser(
+        "init",
+        help="Create StructTool configuration files"
     )
 
     # Save
@@ -164,7 +170,11 @@ def main():
 
     args = parser.parse_args()
 
-    if args.command == "save":
+    if args.command == "init":
+
+        sys.exit(init_project())
+
+    elif args.command == "save":
 
         sys.exit(
             save_structure(

@@ -1,1 +1,5 @@
-__version__ = "2.0.0"
+"""
+StructTool package.
+"""
+
+__version__ = "2.0.2"
