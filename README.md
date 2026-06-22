@@ -20,7 +20,6 @@ It can be used as a lightweight project template manager, allowing you to:
 - [Quick Start](#quick-start)
 - [Quick Usage](#quick-usage)
 - [Features](#features)
-- [Features](#features)
 - [Installation](#installation)
 - [Initialize a Project](#initialize-a-project)
   - [`.structignore`](#structignore)
