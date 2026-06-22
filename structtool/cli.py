@@ -1,71 +1,228 @@
-from pathlib import Path
+"""
+CLI entrypoint.
+
+Responsible only for:
+- parsing arguments
+- dispatching commands
+"""
+
+import argparse
 import sys
 
-APP_DIR = Path.home() / ".structtool"
-STRUCTURES_DIR = APP_DIR / "structures"
-STRUCTURES_DIR.mkdir(parents=True, exist_ok=True)
+from commands.save import (
+    save_structure
+)
 
-def save_structure(struct_name, source_folder):
-    source = Path(source_folder)
+from commands.load import (
+    load_structure
+)
 
-    if not source.exists():
-        print(f"Error: '{source}' does not exist.")
-        return 1
+from commands.list import (
+    list_structures
+)
 
-    output_file = STRUCTURES_DIR / f"{struct_name}.txt"
+from commands.remove import (
+    remove_structure
+)
 
-    with open(output_file, "w", encoding="utf-8") as f:
-        for item in sorted(source.rglob("*")):
-            rel = item.relative_to(source)
+from commands.history import (
+    show_history
+)
 
-            if item.is_dir():
-                f.write(f"DIR:{rel}\n")
-            else:
-                f.write(f"FILE:{rel}\n")
+from commands.search import (
+    search_by_tag
+)
 
-    print(f"Saved structure: {struct_name}")
-    print(f"Location: {output_file}")
-    return 0
+from utils.tree import (
+    show_tree
+)
 
+def main():
+    """
+    Main CLI entrypoint.
 
-def load_structure(struct_name, destination):
-    structure_file = STRUCTURES_DIR / f"{struct_name}.txt"
+    Parses command-line arguments
+    and executes requested command.
+    """
+    parser = argparse.ArgumentParser(
+        prog="structtool",
+        description=(
+            "Save and recreate folder structures"
+        )
+    )
 
-    if not structure_file.exists():
-        print(f"Structure '{struct_name}' not found.")
-        return 1
+    subparsers = (
+        parser.add_subparsers(
+            dest="command"
+        )
+    )
 
-    destination = Path(destination)
+    # Save
+    save_parser = (
+        subparsers.add_parser(
+            "save"
+        )
+    )
 
-    with open(structure_file, "r", encoding="utf-8") as f:
-        for line in f:
-            line = line.strip()
+    save_parser.add_argument(
+        "name"
+    )
 
-            if line.startswith("DIR:"):
-                path = destination / line[4:]
-                path.mkdir(parents=True, exist_ok=True)
+    save_parser.add_argument(
+        "folder"
+    )
 
-            elif line.startswith("FILE:"):
-                path = destination / line[5:]
-                path.parent.mkdir(parents=True, exist_ok=True)
-                path.touch(exist_ok=True)
+    save_parser.add_argument(
+        "--format",
+        choices=[
+            "json",
+            "txt"
+        ],
+        default="json"
+    )
 
-    print(f"Created structure '{struct_name}' in:")
-    print(destination.resolve())
-    return 0
+    save_parser.add_argument(
+        "--include-content",
+        action="store_true"
+    )
 
+    save_parser.add_argument(
+        "--ignore",
+        nargs="*",
+        default=[]
+    )
 
-def savestruct_main():
-    if len(sys.argv) != 3:
-        print("Usage: savestruct <structname> <folder>")
-        sys.exit(1)
+    save_parser.add_argument(
+        "--tags",
+        nargs="*",
+        default=[]
+    )
 
-    sys.exit(save_structure(sys.argv[1], sys.argv[2]))
+    # Load
+    load_parser = (
+        subparsers.add_parser(
+            "load"
+        )
+    )
 
+    load_parser.add_argument(
+        "name"
+    )
 
-def loadstruct_main():
-    if len(sys.argv) != 3:
-        print("Usage: loadstruct <structname> <destination>")
-        sys.exit(1)
+    load_parser.add_argument(
+        "destination"
+    )
 
-    sys.exit(load_structure(sys.argv[1], sys.argv[2]))
+    # List
+    subparsers.add_parser(
+        "list"
+    )
+
+    # Remove
+    remove_parser = (
+        subparsers.add_parser(
+            "remove"
+        )
+    )
+
+    remove_parser.add_argument(
+        "name"
+    )
+
+    # History
+    history_parser = (
+        subparsers.add_parser(
+            "history"
+        )
+    )
+
+    history_parser.add_argument(
+        "name"
+    )
+
+    # Search
+    search_parser = (
+        subparsers.add_parser(
+            "search"
+        )
+    )
+
+    search_parser.add_argument(
+        "tag"
+    )
+
+    # Show
+    show_parser = (
+        subparsers.add_parser(
+            "show"
+        )
+    )
+
+    show_parser.add_argument(
+        "name"
+    )
+
+    args = parser.parse_args()
+
+    if args.command == "save":
+
+        sys.exit(
+            save_structure(
+                args.name,
+                args.folder,
+                args.format,
+                args.include_content,
+                args.ignore,
+                args.tags
+            )
+        )
+
+    elif args.command == "load":
+
+        sys.exit(
+            load_structure(
+                args.name,
+                args.destination
+            )
+        )
+
+    elif args.command == "list":
+
+        sys.exit(
+            list_structures()
+        )
+
+    elif args.command == "remove":
+
+        sys.exit(
+            remove_structure(
+                args.name
+            )
+        )
+
+    elif args.command == "history":
+
+        sys.exit(
+            show_history(
+                args.name
+            )
+        )
+
+    elif args.command == "search":
+
+        sys.exit(
+            search_by_tag(
+                args.tag
+            )
+        )
+
+    elif args.command == "show":
+
+        sys.exit(
+            show_tree(
+                args.name
+            )
+        )
+
+    else:
+        parser.print_help()
