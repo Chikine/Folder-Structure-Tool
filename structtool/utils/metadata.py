@@ -7,12 +7,8 @@ Responsible for:
 - structure information
 """
 
-from ..helpers.get_metadata_file import get_metadata_file
+from ..helpers import get_metadata_file, get_structure_dir
 import json
-
-from utils.versioning import (
-    get_structure_dir
-)
 
 
 def update_metadata(

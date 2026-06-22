@@ -5,10 +5,8 @@ Handles:
 
     structtool load
 """
-import json
-
 from pathlib import Path
-from ..helpers import get_latest_version_file
+from ..utils import get_latest_version_file, load_structure_with_format
 
 def load_structure(
     struct_name,
@@ -39,95 +37,18 @@ def load_structure(
     )
 
     if version_file.suffix == ".json":
-
-        with open(
+        load_structure_with_format(
             version_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
-            data = json.load(f)
-
-        for item in data["items"]:
-
-            path = (
-                destination /
-                item["path"]
-            )
-
-            if item["type"] == "dir":
-
-                path.mkdir(
-                    parents=True,
-                    exist_ok=True
-                )
-
-            else:
-
-                path.parent.mkdir(
-                    parents=True,
-                    exist_ok=True
-                )
-
-                if (
-                    "content"
-                    in item
-                ):
-
-                    path.write_text(
-                        item["content"],
-                        encoding="utf-8"
-                    )
-
-                else:
-
-                    path.touch(
-                        exist_ok=True
-                    )
+            destination,
+            format='json'
+        )
 
     else:
-
-        with open(
+        load_structure_with_format(
             version_file,
-            "r",
-            encoding="utf-8"
-        ) as f:
-
-            for line in f:
-
-                line = line.strip()
-
-                if line.startswith(
-                    "DIR:"
-                ):
-
-                    path = (
-                        destination /
-                        line[4:]
-                    )
-
-                    path.mkdir(
-                        parents=True,
-                        exist_ok=True
-                    )
-
-                elif line.startswith(
-                    "FILE:"
-                ):
-
-                    path = (
-                        destination /
-                        line[5:]
-                    )
-
-                    path.parent.mkdir(
-                        parents=True,
-                        exist_ok=True
-                    )
-
-                    path.touch(
-                        exist_ok=True
-                    )
+            destination,
+            format='txt'
+        )
 
     print(
         f"Created '{struct_name}'"

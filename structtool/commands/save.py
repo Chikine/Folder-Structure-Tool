@@ -1,6 +1,3 @@
-from pathlib import Path
-import json
-
 """
 Save command.
 
@@ -8,12 +5,9 @@ Handles:
 
     structtool save
 """
-
-from utils.versioning import (
-    get_next_version
-)
-
-from ..helpers import get_structure_dir, should_ignore, update_metadata
+from pathlib import Path
+from ..helpers import get_structure_dir
+from ..utils import update_metadata, get_next_version, save_structure_with_format
 
 def save_structure(
     struct_name,
@@ -69,108 +63,13 @@ def save_structure(
         f"v{version}.{format}"
     )
 
-    if format == "json":
-
-        data = {
-            "format": "json",
-            "include_content": include_content,
-            "items": []
-        }
-
-        for item in sorted(
-            source.rglob("*")
-        ):
-
-            rel = item.relative_to(
-                source
-            )
-
-            rel_str = str(rel)
-
-            if should_ignore(
-                rel_str,
-                ignore_patterns
-            ):
-                continue
-
-            if item.is_dir():
-
-                data["items"].append({
-                    "type": "dir",
-                    "path": rel_str
-                })
-
-            else:
-
-                entry = {
-                    "type": "file",
-                    "path": rel_str
-                }
-
-                if include_content:
-
-                    try:
-                        entry[
-                            "content"
-                        ] = item.read_text(
-                            encoding="utf-8"
-                        )
-
-                    except Exception:
-                        entry[
-                            "content"
-                        ] = ""
-
-                data["items"].append(
-                    entry
-                )
-
-        with open(
-            output_file,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            json.dump(
-                data,
-                f,
-                indent=4,
-                ensure_ascii=False
-            )
-
-    else:
-
-        with open(
-            output_file,
-            "w",
-            encoding="utf-8"
-        ) as f:
-
-            for item in sorted(
-                source.rglob("*")
-            ):
-
-                rel = item.relative_to(
-                    source
-                )
-
-                rel_str = str(rel)
-
-                if should_ignore(
-                    rel_str,
-                    ignore_patterns
-                ):
-                    continue
-
-                if item.is_dir():
-                    f.write(
-                        f"DIR:{rel}\n"
-                    )
-
-                else:
-                    f.write(
-                        f"FILE:{rel}\n"
-                    )
+    save_structure_with_format(
+        source,
+        output_file,
+        ignore_patterns,
+        include_content,
+        format
+    )
 
     update_metadata(
         struct_name,

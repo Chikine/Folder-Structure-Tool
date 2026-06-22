@@ -1,12 +1,6 @@
 from pathlib import Path
 
-APP_DIR = Path.home() / ".structtool"
-STRUCTURES_DIR = APP_DIR / "structures"
-
-STRUCTURES_DIR.mkdir(
-    parents=True,
-    exist_ok=True
-)
+from constants import STRUCTURES_DIR
 
 def get_structure_dir(
     struct_name
