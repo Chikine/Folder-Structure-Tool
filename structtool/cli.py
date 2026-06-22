@@ -35,19 +35,14 @@ def main():
         description="""
         StructTool - Save and recreate folder structures.
 
-        Examples:
+        Recommended workflow:
 
             structtool init
-
             structtool save website .
-
+            structtool list
             structtool load website ./NewProject
 
-            structtool list
-
-            structtool search react
-
-        for more information: https://github.com/Chikine/Folder-Structure-Tool
+        Use 'structtool <command> --help' for more information.
         """
     )
 

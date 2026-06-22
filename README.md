@@ -63,6 +63,108 @@ structtool --help
 
 ---
 
+## Initialize a Project
+
+Before saving structures, initialize StructTool in your project:
+
+```bash
+structtool init
+```
+
+This creates two configuration files:
+
+```text
+.structignore
+.structtool.json
+```
+
+---
+
+### `.structignore`
+
+Defines files and folders that should not be saved.
+
+Example:
+
+```text
+# Node.js
+node_modules
+dist
+
+# Python
+__pycache__
+*.pyc
+
+# Git
+.git
+
+# IDE
+.vscode
+.idea
+```
+
+These patterns are automatically applied when running:
+
+```bash
+structtool save website .
+```
+
+---
+
+### `.structtool.json`
+
+Stores default StructTool settings.
+
+Example:
+
+```json
+{
+    "default_format": "json",
+    "include_content": false,
+    "ignore_file": ".structignore",
+    "default_tags": [],
+    "max_content_size_kb": 100
+}
+```
+
+This allows `structtool save` to reuse project settings without repeatedly specifying command-line options.
+
+---
+
+### Recreate Configuration Files
+
+If configuration files already exist, StructTool will preserve them:
+
+```bash
+structtool init
+```
+
+To overwrite existing files:
+
+```bash
+structtool init --force
+```
+
+---
+
+### Recommended Workflow
+
+```bash
+# Initialize configuration
+structtool init
+
+# Save the current project
+structtool save website .
+
+# Show available structures
+structtool list
+
+# Load the structure elsewhere
+structtool load website ./NewProject
+```
+
+---
+
 ## Commands
 
 ### Save a Structure
@@ -407,6 +509,21 @@ Install editable version:
 ```bash
 pip install -e .
 ```
+
+---
+
+## Command Table
+
+| Command              | Description                                   |
+| -------------------- | --------------------------------------------- |
+| `structtool init`    | Create `.structignore` and `.structtool.json` |
+| `structtool save`    | Save a folder structure                       |
+| `structtool load`    | Recreate a structure                          |
+| `structtool list`    | Show saved structures                         |
+| `structtool history` | Show version history                          |
+| `structtool show`    | Display structure tree                        |
+| `structtool search`  | Search by tags                                |
+| `structtool remove`  | Delete a structure                            |
 
 ---
 
