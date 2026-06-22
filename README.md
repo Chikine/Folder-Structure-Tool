@@ -44,7 +44,7 @@ It can be used as a lightweight project template manager, allowing you to:
 Clone the repository:
 
 ```bash
-git clone https://github.com/yourusername/structtool.git
+git clone https://github.com/Chikine/Folder-Structure-Tool
 
 cd structtool
 ```
