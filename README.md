@@ -17,6 +17,9 @@ It can be used as a lightweight project template manager, allowing you to:
 
 ## Table of Contents
 
+- [Quick Start](#quick-start)
+- [Quick Usage](#quick-usage)
+- [Features](#features)
 - [Features](#features)
 - [Installation](#installation)
 - [Initialize a Project](#initialize-a-project)
@@ -70,6 +73,43 @@ It can be used as a lightweight project template manager, allowing you to:
 ✅ Ignore files and folders
 
 ✅ Cross-platform support
+
+---
+
+## Quick Start
+
+```bash
+# Initialize configuration files
+structtool init
+
+# Save a structure
+structtool save website .
+
+# Show saved structures
+structtool list
+
+# Recreate a structure
+structtool load website ./NewProject
+```
+
+---
+
+## Quick Usage
+
+StructTool can be invoked using either:
+
+- `structtool` (full command)
+- `strt` (short alias)
+
+Examples:
+
+```bash
+structtool init
+strt init
+
+structtool save website .
+strt save website .
+```
 
 ---
 

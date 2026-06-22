@@ -11,6 +11,7 @@ requires-python = ">=3.8"
 
 [project.scripts]
 structtool = "structtool.cli:main"
+strt = "structtool.cli:main"
 
 [tool.setuptools.packages.find]
 where = ["."]
