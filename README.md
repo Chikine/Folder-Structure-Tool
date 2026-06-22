@@ -15,6 +15,40 @@ It can be used as a lightweight project template manager, allowing you to:
 
 ---
 
+## Table of Contents
+
+- [Features](#features)
+- [Installation](#installation)
+- [Initialize a Project](#initialize-a-project)
+  - [`.structignore`](#structignore)
+  - [`.structtool.json`](#structtooljson)
+  - [Recreate Configuration Files](#recreate-configuration-files)
+  - [Recommended Workflow](#recommended-workflow)
+- [Commands](#commands)
+  - [Save a Structure](#save-a-structure)
+  - [Save as JSON](#save-as-json)
+  - [Save as TXT](#save-as-txt)
+  - [Save File Contents](#save-file-contents)
+  - [Ignore Files and Folders](#ignore-files-and-folders)
+  - [Add Tags](#add-tags)
+- [Load a Structure](#load-a-structure)
+- [List Structures](#list-structures)
+- [Remove a Structure](#remove-a-structure)
+- [Show Version History](#show-version-history)
+- [Search by Tag](#search-by-tag)
+- [Tree View](#tree-view)
+- [Versioning](#versioning)
+- [Storage Location](#storage-location)
+  - [Windows](#windows)
+  - [Linux](#linux)
+  - [macOS](#macos)
+- [Structure Layout](#structure-layout)
+- [JSON Structure Format](#json-structure-format)
+- [Roadmap](#roadmap)
+- [Development](#development)
+- [Command Table](#command-table)
+- [License](#license)
+
 ## Features
 
 ✅ Save folder structures
